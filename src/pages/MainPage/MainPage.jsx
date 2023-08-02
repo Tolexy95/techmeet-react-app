@@ -13,7 +13,7 @@ const MainPage = () => {
  const navigate = useNavigate();
 
   const findUsers = async (userName, token) => {
-    isLoading(true)
+   
      try {
       const response = await fetch(
         `https://techmeetappwebapi.onrender.com/api/Users/${userName}`, 
@@ -31,12 +31,12 @@ const MainPage = () => {
       }
 
     const userData = await response.json();
-    setIsLoading(false); 
+    
    // Use the navigate function to navigate to the user profile page
     navigate(`/othersProfile/${userData.userName}`);
     } catch (error) {
       console.error("Error:", error.message);
-      setIsLoading(false); 
+      
       alert("user does not exist")
       // Handle the error here, e.g., show an error message to the user
     }
