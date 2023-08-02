@@ -38,7 +38,7 @@ const MainPage = () => {
       } catch (error) {
         console.error("Error:", error.message);
         setIsLoading(false);
-        alert("User does not exist or unauthorized access");
+        alert("User does not exist");
         // Handle the error here, e.g., show an error message to the user
       }
     };
@@ -46,23 +46,11 @@ const MainPage = () => {
     const handleKeyPress = (e) => {
       if (e.key === "Enter") {
         findUsers();
+        setUserInput("")
       }
+     
     };
 
-
-    
-  // const handleNavigation = async () => {
-  //   // Call the fetchUser function with the entered username
-  //   await fetchUser(userInput, token);
-  //   // After fetching the user data, navigate to the user profile page
-  //   navigate(`/othersProfile/${userInput}`);
-  // };
-
-  // const  handleKeyPress= (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleNavigation();
-  //   }
-  // };
 
   const toggleSidebar = () => {
     setSidebarOpen((prevIsSidebarOpen) => !prevIsSidebarOpen);

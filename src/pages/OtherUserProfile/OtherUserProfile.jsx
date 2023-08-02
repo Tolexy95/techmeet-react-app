@@ -6,12 +6,6 @@ import { UserInformationContext } from "../../context/UserTokenProvider";
 const OtherUserProfile = () => {
   const { userData } = useContext(UserInformationContext); // Get the userData from the context
 
-  // // If the userData is not available or loading, show a loading message
-  // if (!userData) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // Destructure the properties from userData
   const {
     userName,
     photoUrl,
