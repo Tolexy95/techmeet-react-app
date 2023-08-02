@@ -1,102 +1,77 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./profile.module.css";
-import { UserInformationContext } from "../../context/UserTokenProvider";
 import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
-  const [profilePicturePreview, setProfilePicturePreview] = useState("");
-  const [profile, setProfile] = useState({
-    profilePicture: "",
+  const [profilePicturePreview, setProfilePicturePreview] = useState(AppLogo);
+  const [profileData, setProfileData] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
     gender: "",
     email: "",
     address: "",
+    dateOfBirth: "",
+    interests: "",
+    state: "",
+    country: "",
     stack: "",
     yearsOfExperience: "",
-    social: {
-      facebook: "",
-      linkedin: "",
-      twitter: "",
-      instagram: "",
-    },
+    facebook: "",
+    linkedin: "",
+    twitter: "",
+    instagram: "",
     bio: "",
+    profilePicture: null,
   });
 
-  const { clickedUser } = useContext(UserInformationContext);
+  useEffect(() => {
+    loadProfile();
+  }, []);
 
-  // Function to handle file input change and update the profile picture preview
-  const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setProfileData({ ...profileData, [id]: value });
+  };
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onload = () => {
+        setProfileData({ ...profileData, profilePicture: reader.result });
         setProfilePicturePreview(reader.result);
       };
       reader.readAsDataURL(file);
-    }
-  };
-
-  // Function to handle input change and update profile data
-  const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    setProfile((prevProfile) => ({ ...prevProfile, [id]: value }));
-    saveProfile();
-  };
-
-  // Function to save the profile information to local storage
-  const saveProfile = () => {
-    localStorage.setItem("profile", JSON.stringify(profile));
-    if (isProfileUpdated()) {
-      alert("Profile has been successfully updated.");
     } else {
-      alert("Please make some changes before updating the profile.");
+      setProfileData({ ...profileData, profilePicture: null });
+      setProfilePicturePreview(AppLogo);
     }
   };
 
-  // Function to check if any changes have been made to the profile
-  const isProfileUpdated = () => {
-    const {
-      firstName,
-      lastName,
-      phone,
-      gender,
-      email,
-      address,
-      stack,
-      yearsOfExperience,
-      facebook,
-      linkedin,
-      twitter,
-      instagram,
-      bio,
-    } = profile;
-    return (
-      firstName !== "" ||
-      lastName !== "" ||
-      phone !== "" ||
-      gender !== "" ||
-      email !== "" ||
-      address !== "" ||
-      stack !== "" ||
-      yearsOfExperience !== "" ||
-      facebook !== "" ||
-      linkedin !== "" ||
-      twitter !== "" ||
-      instagram !== "" ||
-      bio !== ""
-    );
+
+
+  const saveProfile = () => {
+    // Exclude the profilePicture from the saved data in localStorage
+    const { profilePicture, ...profileDataWithoutPicture } = profileData;
+    localStorage.setItem("profile", JSON.stringify(profileDataWithoutPicture));
+    alert("Profile has been successfully updated.");
   };
 
-  // Function to load the profile information from local storage on page load
-  useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
-    if (storedProfile) {
-      setProfile(JSON.parse(storedProfile));
+
+  const loadProfile = () => {
+    if (localStorage.getItem("profile")) {
+      const profile = JSON.parse(localStorage.getItem("profile"));
+      setProfileData(profile);
+
+      if (profile.profilePicture && profile.profilePicture instanceof Blob) {
+        setProfilePicturePreview(URL.createObjectURL(profile.profilePicture));
+      } else {
+        setProfilePicturePreview(AppLogo);
+      }
     }
-  }, []);
+  };
 
   return (
     <main className={styles.main}>
@@ -110,8 +85,7 @@ const ProfilePage = () => {
       <section className={`${styles.container} ${styles.messageContainer}`}>
         <div className={styles.profile}>
           <div className={styles["profile-picture"]}>
-            <label htmlFor="profile-picture">upload picture</label>
-
+            <label htmlFor="profile-picture">Upload Picture</label>
             <input
               type="file"
               id="profile-picture"
@@ -130,24 +104,24 @@ const ProfilePage = () => {
           <div className={styles["profile-info"]}>
             <div className={styles.nameDiv}>
               <div>
-                <label htmlFor="first-name">First Name:</label>
+                <label htmlFor="firstName">First Name:</label>
                 <input
                   type="text"
                   id="firstName"
                   className={styles["name-input"]}
                   placeholder="Enter your firstname"
-                  value={profile.firstName}
+                  value={profileData.firstName}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label htmlFor="last-name">Last Name:</label>
+                <label htmlFor="lastName">Last Name:</label>
                 <input
                   type="text"
                   id="lastName"
                   className={styles["name-input"]}
                   placeholder="Enter your Lastname"
-                  value={profile.lastName}
+                  value={profileData.lastName}
                   onChange={handleInputChange}
                 />
               </div>
@@ -155,13 +129,13 @@ const ProfilePage = () => {
 
             <div className={styles.genderDiv}>
               <div>
-                <label htmlFor="phone">Phone Number:</label>
+                <label htmlFor="phoneNumber">Phone Number:</label>
                 <input
                   type="number"
                   id="phoneNumber"
                   className={styles["phone-input"]}
-                  placeholder="phone number"
-                  value={profile.phoneNumber}
+                  placeholder="Phone number"
+                  value={profileData.phoneNumber}
                   onChange={handleInputChange}
                 />
               </div>
@@ -171,7 +145,7 @@ const ProfilePage = () => {
                   type="text"
                   id="gender"
                   className={styles["gender-input"]}
-                  value={profile.gender}
+                  value={profileData.gender}
                   onChange={handleInputChange}
                 />
               </div>
@@ -182,7 +156,7 @@ const ProfilePage = () => {
               id="email"
               className={styles["email-input"]}
               placeholder="Enter your Email"
-              value={profile.email}
+              value={profileData.email}
               onChange={handleInputChange}
             />
             <label htmlFor="address">Address:</label>
@@ -191,18 +165,67 @@ const ProfilePage = () => {
               id="address"
               className={styles["address-input"]}
               placeholder="Enter your address"
-              value={profile.address}
+              value={profileData.address}
               onChange={handleInputChange}
             />
+            <div className={styles.genderDiv}>
+              <div>
+                <label htmlFor="dateOfBirth">DOB:</label>
+                <input
+                  type="number"
+                  id="dateOfBirth"
+                  className={styles["phone-input"]}
+                  placeholder="DOB"
+                  value={profileData.dateOfBirth}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="interests">Interests:</label>
+                <input
+                  type="text"
+                  id="interests"
+                  placeholder="What are your interests?"
+                  className={styles["gender-input"]}
+                  value={profileData.interests}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div className={styles.genderDiv}>
+              <div>
+                <label htmlFor="state">State:</label>
+                <input
+                  type="text"
+                  id="state"
+                  placeholder="Your state"
+                  className={styles["gender-input"]}
+                  value={profileData.state}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="country">Country:</label>
+                <input
+                  type="text"
+                  id="country"
+                  className={styles["phone-input"]}
+                  placeholder="Your country"
+                  value={profileData.country}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
 
             <label htmlFor="stack">Stack Level:</label>
             <select
               id="stack"
               className={styles["stack-input"]}
-              value={profile.stack}
+              value={profileData.stack}
               onChange={handleInputChange}
             >
-              <option value="">pick your track</option>
+              <option value="">Pick your track</option>
               <option value="react">React</option>
               <option value="java">Java</option>
               <option value=".Net">.Net</option>
@@ -217,7 +240,7 @@ const ProfilePage = () => {
               id="yearsOfExperience"
               className={styles["exper-input"]}
               placeholder="0"
-              value={profile.yearsOfExperience}
+              value={profileData.yearsOfExperience}
               onChange={handleInputChange}
             />
 
@@ -230,7 +253,7 @@ const ProfilePage = () => {
                   id="facebook"
                   className={styles.social}
                   placeholder="Facebook handle"
-                  value={profile.social.facebook}
+                  value={profileData.facebook}
                   onChange={handleInputChange}
                 />
               </div>
@@ -241,7 +264,7 @@ const ProfilePage = () => {
                   id="linkedin"
                   className={styles.social}
                   placeholder="LinkedIn handle"
-                  value={profile.social.linkedin}
+                  value={profileData.linkedin}
                   onChange={handleInputChange}
                 />
               </div>
@@ -252,7 +275,7 @@ const ProfilePage = () => {
                   id="twitter"
                   className={styles.social}
                   placeholder="Twitter handle"
-                  value={profile.social.twitter}
+                  value={profileData.twitter}
                   onChange={handleInputChange}
                 />
               </div>
@@ -263,7 +286,7 @@ const ProfilePage = () => {
                   id="instagram"
                   className={styles.social}
                   placeholder="Instagram handle"
-                  value={profile.social.instagram}
+                  value={profileData.instagram}
                   onChange={handleInputChange}
                 />
               </div>
@@ -275,12 +298,12 @@ const ProfilePage = () => {
               id="bio"
               className={styles["bio-input"]}
               placeholder="Write a short bio about yourself"
-              value={profile.bio}
+              value={profileData.bio}
               onChange={handleInputChange}
             ></textarea>
 
             <a className={styles["update-btn"]} onClick={saveProfile}>
-              <span>update profile</span>
+              <span>Update Profile</span>
             </a>
           </div>
         </div>

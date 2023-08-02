@@ -69,21 +69,6 @@ const OtherUserProfile = () => {
           <strong>Last Active:</strong> {lastActive}
         </p>
       </div>
-
-      <div className={styles.profilePhotos}>
-        {photos.length > 0 ? (
-          photos.map((photo, index) => (
-            <img
-              key={index}
-              src={photo}
-              alt={`Photo ${index + 1}`}
-              className={styles.photo}
-            />
-          ))
-        ) : (
-          <p>No photos available</p>
-        )}
-      </div>
     </div>
   );
 };

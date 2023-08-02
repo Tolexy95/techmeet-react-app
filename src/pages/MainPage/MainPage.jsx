@@ -8,10 +8,12 @@ const MainPage = () => {
   const [isDarkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [userInput, setUserInput] = useState("");
+  const[isLoading, setIsLoading]=useState("")
   const {userName, token, fetchUser } = useContext(UserInformationContext);
  const navigate = useNavigate();
 
   const findUsers = async (userName, token) => {
+    isLoading(true)
      try {
       const response = await fetch(
         `https://techmeetappwebapi.onrender.com/api/Users/${userName}`, 
@@ -29,10 +31,12 @@ const MainPage = () => {
       }
 
     const userData = await response.json();
+    setIsLoading(false); 
    // Use the navigate function to navigate to the user profile page
     navigate(`/othersProfile/${userData.userName}`);
     } catch (error) {
       console.error("Error:", error.message);
+      setIsLoading(false); 
       alert("user does not exist")
       // Handle the error here, e.g., show an error message to the user
     }
@@ -145,14 +149,18 @@ const MainPage = () => {
 
       <section className={style.home}>
         <div className={style.text}>
-          {/* {userName && (
-              <p id="userCredentials">Welcome {userName.toUpperCase()}</p>
-            )} */}
           <p id="userCredentials">Welcome {userName.toUpperCase()}</p>
         </div>
         <span className={style.image}>
           <img src={AppLogo} alt="" className={style.pageLogo} />
         </span>
+        
+        {isLoading && (
+            <p className={style.successMessage}>
+             Fetching...
+            </p>
+        )}
+
       </section>
     </div>
   );
