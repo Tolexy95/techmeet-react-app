@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./otherUser.module.css";
 import { UserInformationContext } from "../../context/UserTokenProvider";
-import { Link } from "react-router-dom";
 
 const OtherUserProfile = () => {
-  const { clickedUser } = useContext(UserInformationContext);
+  const { userData } = useContext(UserInformationContext); // Get the userData from the context
 
-  // Check if clickedUser exists and has data
-  if (!clickedUser || Object.keys(clickedUser).length === 0) {
-    return <div>{clickedUser}</div>;
-  }
+  // // If the userData is not available or loading, show a loading message
+  // if (!userData) {
+  //   return <div>Loading...</div>;
+  // }
 
+  // Destructure the properties from userData
   const {
     userName,
     photoUrl,
@@ -25,17 +25,25 @@ const OtherUserProfile = () => {
     interests,
     city,
     country,
-    photos,
-  } = clickedUser;
+  } = userData || {};
+
+  // Function to format the date of birth as "YYYY-MM-DD"
+  const formatDateOfBirth = (dob) => {
+    const dateObj = new Date(dob);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   return (
     <div className={styles.profile}>
       <div className={styles.profileHeader}>
         <img
-          src={photoUrl || "default-profile-picture.png"} // Use a default image if the user doesn't have a photoUrl
+          src={photoUrl || "default-profile-picture.png"}
           alt="Profile Picture"
-          className={styles.profilePicture}
-        />
+          className={styles.profilePicture}/>
+
         <h1 className={styles.profileName}>{fullName}</h1>
         <p className={styles.profileUsername}>@{userName}</p>
       </div>
@@ -45,7 +53,7 @@ const OtherUserProfile = () => {
           <strong>Gender:</strong> {gender}
         </p>
         <p>
-          <strong>Date of Birth:</strong> {dateOfBirth}
+          <strong>Date of Birth:</strong> {dateOfBirth ? formatDateOfBirth(dateOfBirth) : "N/A"}
         </p>
         <p>
           <strong>About:</strong> {about || "N/A"}

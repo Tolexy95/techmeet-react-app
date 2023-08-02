@@ -6,6 +6,7 @@ const UserTokenProvider = ({ children }) => {
   const [token, setToken] = useState('');
   const [userName, setUserName] = useState('');
   const [clickedUser, setClickedUser] = useState({});
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     // On initial load, try to fetch the token and userName from session storage
@@ -58,6 +59,9 @@ const UserTokenProvider = ({ children }) => {
     setUserName,
     clickedUser,
     setClickedUser,
+    userData,
+    setUserData,
+
     // fetchUser, // Add the fetchUser function to the context values
   };
 

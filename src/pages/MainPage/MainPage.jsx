@@ -4,19 +4,20 @@ import style from "./mainPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { UserInformationContext } from "../../context/UserTokenProvider";
 
+
 const MainPage = () => {
   const [isDarkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [userInput, setUserInput] = useState("");
-  const[isLoading, setIsLoading]=useState("")
-  const {userName, token, fetchUser } = useContext(UserInformationContext);
- const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+  const { userName, token, userData, setUserData } = useContext(UserInformationContext);
+  const navigate = useNavigate();
 
-  const findUsers = async (userName, token) => {
-   
-     try {
+  const findUsers = async () => {
+    try {
+      setIsLoading(true);
       const response = await fetch(
-        `https://techmeetappwebapi.onrender.com/api/Users/${userName}`, 
+        `https://techmeetappwebapi.onrender.com/api/Users/${userInput}`,
         {
           method: "PUT",
           headers: {
@@ -27,27 +28,29 @@ const MainPage = () => {
       );
 
       if (!response.ok) {
-        throw new Error("User not found or unauthorized access");   
+        throw new Error("User not found or unauthorized access");
       }
 
-    const userData = await response.json();
+      const userData = await response.json();
+      setUserData(userData); // Save the fetched user data in the state
+       // Use the navigate function to navigate to the user profile page
+       navigate(`/othersProfile/${userData.userName}`);
+      } catch (error) {
+        console.error("Error:", error.message);
+        setIsLoading(false);
+        alert("User does not exist or unauthorized access");
+        // Handle the error here, e.g., show an error message to the user
+      }
+    };
+  
+    const handleKeyPress = (e) => {
+      if (e.key === "Enter") {
+        findUsers();
+      }
+    };
+
+
     
-   // Use the navigate function to navigate to the user profile page
-    navigate(`/othersProfile/${userData.userName}`);
-    } catch (error) {
-      console.error("Error:", error.message);
-      
-      alert("user does not exist")
-      // Handle the error here, e.g., show an error message to the user
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      findUsers(userInput, token);
-    }
-  };
-
   // const handleNavigation = async () => {
   //   // Call the fetchUser function with the entered username
   //   await fetchUser(userInput, token);
@@ -69,7 +72,7 @@ const MainPage = () => {
     setDarkMode((prevIsDarkMode) => !prevIsDarkMode);
   };
 
- return (
+  return (
     <div>
       <nav className={`${style.sidebar} ${isDarkMode ? style.close : ""}`}>
         <header>
@@ -86,8 +89,8 @@ const MainPage = () => {
                 type="text"
                 placeholder="Search..."
                 value={userInput}
-            onInput={(e) => setUserInput(e.target.value)}
-            onKeyDown={handleKeyPress} // Use handleKeyPress function for onKeyDown event
+                onInput={(e) => setUserInput(e.target.value)}
+                onKeyDown={handleKeyPress} // Use handleKeyPress function for onKeyDown event
               />
             </li>
 
@@ -154,13 +157,9 @@ const MainPage = () => {
         <span className={style.image}>
           <img src={AppLogo} alt="" className={style.pageLogo} />
         </span>
-        
-        {isLoading && (
-            <p className={style.successMessage}>
-             Fetching...
-            </p>
-        )}
 
+        {isLoading && <p className={style.successMessage}>Fetching...</p>}
+       
       </section>
     </div>
   );

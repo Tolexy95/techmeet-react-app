@@ -4,8 +4,7 @@ import styles from "./userpage.module.css";
 
 const UserPage = () => {
   const [users, setUsers] = useState([]);
-  const currentUser = localStorage.getItem("userName");
-
+  
   useEffect(() => {
     const getUsers = async () => {
       try {
