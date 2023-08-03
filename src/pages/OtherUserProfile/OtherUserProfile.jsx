@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./otherUser.module.css";
 import { UserInformationContext } from "../../context/UserTokenProvider";
+import { Link } from "react-router-dom";
 
 const OtherUserProfile = () => {
   const { userData } = useContext(UserInformationContext); // Get the userData from the context
@@ -27,7 +28,7 @@ const OtherUserProfile = () => {
     const year = dateObj.getFullYear();
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const day = String(dateObj.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return `${year}/${month}/${day}`;
   };
 
   return (
@@ -67,9 +68,12 @@ const OtherUserProfile = () => {
         <p>
           <strong>Member since:</strong> {created}
         </p>
-        <p>
+        {/* <p>
           <strong>Last Active:</strong> {lastActive}
-        </p>
+        </p> */}
+      </div>
+      <div className={styles.message}>
+        <Link to="/message/:userId"> chat with user</Link>
       </div>
     </div>
   );

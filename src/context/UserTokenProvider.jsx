@@ -6,7 +6,20 @@ const UserTokenProvider = ({ children }) => {
   const [token, setToken] = useState('');
   const [userName, setUserName] = useState('');
   const [clickedUser, setClickedUser] = useState({});
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({
+    userName:'',
+    photoUrl :'',
+    dateOfBirth:'',
+    fullName:'',
+    created:'',
+    lastActive:'',
+    gender:'',
+    about:'',
+    lookingFor:'',
+    interests:'',
+    city:'',
+    country:'',
+  });
 
   useEffect(() => {
     // On initial load, try to fetch the token and userName from session storage

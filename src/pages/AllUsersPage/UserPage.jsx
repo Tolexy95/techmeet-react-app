@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import {Link, useNavigate } from "react-router-dom";
 import styles from "./userpage.module.css";
+import { UserInformationContext } from "../../context/UserTokenProvider";
 
 const UserPage = () => {
   const [users, setUsers] = useState([]);
+  const {userData} = useContext(UserInformationContext);
   
   useEffect(() => {
     const getUsers = async () => {
@@ -50,7 +52,7 @@ const UserPage = () => {
                 })}
               </p>
               <Link
-                to={`/profilePage/${user.userName}`}
+                to={`/othersProfile/${userData.userName}`}
                 className={styles.otherUserProfile}>
                 Go to user profile
               </Link>
@@ -59,6 +61,7 @@ const UserPage = () => {
                 className={styles.chatWithUser}>
                 Chat with user
               </Link>
+              
 
             </div>
           ))}

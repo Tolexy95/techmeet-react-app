@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./profile.module.css";
 import { Link } from "react-router-dom";
+import { UserInformationContext } from "../../context/UserTokenProvider";
+
 
 const ProfilePage = () => {
   const [profilePicturePreview, setProfilePicturePreview] = useState(AppLogo);
@@ -25,6 +27,23 @@ const ProfilePage = () => {
     bio: "",
     profilePicture: null,
   });
+
+  const {userData} =useContext(UserInformationContext)
+  const {
+    userName,
+    photoUrl,
+    dateOfBirth,
+    fullName,
+    created,
+    lastActive,
+    gender,
+    about,
+    lookingFor,
+    interests,
+    city,
+    country,
+  } = userData || {};
+
 
   useEffect(() => {
     loadProfile();
@@ -145,7 +164,7 @@ const ProfilePage = () => {
                   type="text"
                   id="gender"
                   className={styles["gender-input"]}
-                  value={profileData.gender}
+                  value={gender}
                   onChange={handleInputChange}
                 />
               </div>
@@ -176,7 +195,7 @@ const ProfilePage = () => {
                   id="dateOfBirth"
                   className={styles["phone-input"]}
                   placeholder="DOB"
-                  value={profileData.dateOfBirth}
+                  value={dateOfBirth}
                   onChange={handleInputChange}
                 />
               </div>
@@ -201,7 +220,7 @@ const ProfilePage = () => {
                   id="state"
                   placeholder="Your state"
                   className={styles["gender-input"]}
-                  value={profileData.state}
+                  value={city}
                   onChange={handleInputChange}
                 />
               </div>
@@ -212,7 +231,7 @@ const ProfilePage = () => {
                   id="country"
                   className={styles["phone-input"]}
                   placeholder="Your country"
-                  value={profileData.country}
+                  value={country}
                   onChange={handleInputChange}
                 />
               </div>

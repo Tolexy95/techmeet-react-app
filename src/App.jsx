@@ -8,10 +8,10 @@ import SignUpPage from "./pages/SIgnUp/SignUpPage";
 import SignInPage from "./pages/SignIn/SignInPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
 import OtherUserProfile from "./pages/OtherUserProfile/OtherUserProfile";
-import MessagePage from "./pages/MessageContainer/MessagePage";
 import MainPage from "./pages/MainPage/MainPage";
 import UserPage from "./pages/AllUsersPage/UserPage";
 import Home from "./pages/Home";
+import MessageContainer from "./pages/MessageContainer/MessagePage";
 
 function App() {
   return (
@@ -23,8 +23,8 @@ function App() {
         <Route exact path="/mainPage" element={<MainPage/>}/>
         <Route exact path="/profilePage" element={<ProfilePage/>} />
         <Route exact path="/userPage" element={<UserPage/>} />
-        <Route exact path="/messagePage" element={<MessagePage/>}/>
-        <Route exact path="/othersProfile/:users" element={<OtherUserProfile/>}/>
+        <Route exact path="/message/:userName" element={<MessageContainer/>}/>
+        <Route exact path="/othersProfile/:userId" element={<OtherUserProfile/>}/>
       </Routes>
         </>
   );
