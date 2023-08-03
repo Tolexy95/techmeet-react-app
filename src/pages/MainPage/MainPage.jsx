@@ -106,7 +106,7 @@ const MainPage = () => {
 
               <li className={style["nav-link"]}>
                 <i className="bx bx-wallet icon"></i>
-                <Link to="/messagePage" className={`text ${style["nav-text"]}`}>
+                <Link to="/allMessage" className={`text ${style["nav-text"]}`}>
                   Messages
                 </Link>
               </li>

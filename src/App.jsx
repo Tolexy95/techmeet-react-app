@@ -12,6 +12,8 @@ import MainPage from "./pages/MainPage/MainPage";
 import UserPage from "./pages/AllUsersPage/UserPage";
 import Home from "./pages/Home";
 import MessageContainer from "./pages/MessageContainer/MessagePage";
+import AllMessage from "./pages/AllMessageContainer/AllMessage";
+
 
 function App() {
   return (
@@ -24,7 +26,8 @@ function App() {
         <Route exact path="/profilePage" element={<ProfilePage/>} />
         <Route exact path="/userPage" element={<UserPage/>} />
         <Route exact path="/message/:userName" element={<MessageContainer/>}/>
-        <Route exact path="/othersProfile/:userId" element={<OtherUserProfile/>}/>
+        <Route exact path="/othersProfile/:userName" element={<OtherUserProfile/>}/>
+        <Route exact path="/allMessage" element ={<AllMessage/>}/>
       </Routes>
         </>
   );

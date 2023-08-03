@@ -1,25 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserInformationContext } from "../../context/UserTokenProvider";
 
-const MessageContainer = ({match}) => {
-  const { userData, userName, token } = useContext(UserInformationContext); // Get the userData from the context
-  const { userName: currentUserName } = userData || {}; // Assuming the token is stored in the userData
+const MessageContainer = ({ match }) => {
+  const { userData, userName, token, messages, setMessages } = useContext(
+    UserInformationContext
+  ); // Get the userData from the context
+  const { userName: currentUserName } = userData || {};
 
-  // const { userName } = match.params; // Get the user name from the URL params
-
-  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
     // Function to fetch messages from the backend
     const fetchMessages = async () => {
       try {
-        const response = await fetch(`https://techmeetappwebapi.onrender.com/api/Message/thread/${currentUserName}`, {
-          method: "PUT", // Use the PUT method for fetching messages
-          headers: {
-            Authorization: `Bearer ${token}`, // Use the token from the context for authorization
-          },
-        });
+        const response = await fetch(
+          `https://techmeetappwebapi.onrender.com/api/Message/thread/${currentUserName}`,
+          {
+            method: "PUT", // Use the PUT method for fetching messages
+            headers: {
+              Authorization: `Bearer ${token}`, // Use the token from the context for authorization
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -36,17 +38,20 @@ const MessageContainer = ({match}) => {
   // Function to handle sending a new message
   const handleSendMessage = async () => {
     try {
-      const response = await fetch("https://techmeetappwebapi.onrender.com/api/Message/send", {
-        method: "POST", // Use the POST method for sending messages
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Use the token from the context for authorization
-        },
-        body: JSON.stringify({
-          recipientUsername: userName,
-          content: newMessage,
-        }),
-      });
+      const response = await fetch(
+        "https://techmeetappwebapi.onrender.com/api/Message/send",
+        {
+          method: "POST", // Use the POST method for sending messages
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Use the token from the context for authorization
+          },
+          body: JSON.stringify({
+            recipientUsername: userName.toUpperCase(), // Change recipientUsername to uppercase
+            content: newMessage,
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -59,6 +64,12 @@ const MessageContainer = ({match}) => {
     }
   };
 
+  // Function to format the time
+  const formatTime = (time) => {
+    const date = new Date(time);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  };
+
   return (
     <div>
       <h2>Messages with User {currentUserName}</h2>
@@ -66,8 +77,9 @@ const MessageContainer = ({match}) => {
         {/* Display existing messages */}
         {messages.map((message, index) => (
           <div key={index}>
+            <p>{message.recipientUsername.toUpperCase()}</p>
             <p>{message.content}</p>
-            <p>Sent at: {message.sentAt}</p>
+            <p>Sent at: {formatTime(message.messageSent)}</p>
           </div>
         ))}
       </div>
