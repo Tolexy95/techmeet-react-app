@@ -75,6 +75,11 @@ const MessageContainer = () => {
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
+   // Sort messages by messageSent timestamp
+   const sortedMessages = messages.sort((a, b) => {
+    return new Date(a.messageSent) - new Date(b.messageSent);
+  });
+
   return (
     <div>
       <h2>Messages with {recipientUsername}</h2>
@@ -88,10 +93,8 @@ const MessageContainer = () => {
       <div className={style.mainContainer}>
         <div>
           {/* Display existing messages */}
-          {messages.map((message, index) => (
+         {sortedMessages.map((message, index) => (
             <div key={index}>
-              {/* <p>{message.recipientUsername}</p> */}
-
               <div className={style.messageContainer}>
                 <p>{message.content}</p>
                 <p>Sent at: {formatTime(message.messageSent)}</p>

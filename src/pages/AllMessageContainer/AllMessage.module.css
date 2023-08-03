@@ -4,3 +4,17 @@
     border-radius: 50%;
     background-color: blanchedalmond;
 }
+
+.MainContainer{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding-bottom: 30px;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    
+}
+
+/* .messageContainer{
+    
+} */
