@@ -20,16 +20,9 @@ const UserTokenProvider = ({ children }) => {
     city:'',
     country:'',
   });
-  const [messages, setMessages] = useState({});
+  const [messages, setMessages] = useState([]);
 
    
-  //  senderPhotoUrl: null,
-  //   senderUsername: "",
-  //   recipientPhotoUrl: null,
-  //   recipientUsername: "",
-  //   content: "",
-  //   dateRead: null,
-  //   messageSent: ""
   
   useEffect(() => {
     // On initial load, try to fetch the token and userName from session storage

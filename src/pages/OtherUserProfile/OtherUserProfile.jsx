@@ -21,7 +21,7 @@ const OtherUserProfile = () => {
     city,
     country,
   } = userData || {};
-
+  const{recipientUsername:recipientUsername} =userData || {}
   // Function to format the date of birth as "YYYY-MM-DD"
   const formatDateOfBirth = (dob) => {
     const dateObj = new Date(dob);
@@ -73,7 +73,7 @@ const OtherUserProfile = () => {
         </p> */}
       </div>
       <div className={styles.message}>
-        <Link to="/message/:userId"> chat with user</Link>
+      <Link to={`/message/${recipientUsername}`}> chat with user</Link>
       </div>
     </div>
   );

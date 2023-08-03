@@ -25,7 +25,7 @@ function App() {
         <Route exact path="/mainPage" element={<MainPage/>}/>
         <Route exact path="/profilePage" element={<ProfilePage/>} />
         <Route exact path="/userPage" element={<UserPage/>} />
-        <Route exact path="/message/:userName" element={<MessageContainer/>}/>
+        <Route exact path="/message/:recipientUsername" element={<MessageContainer/>}/>
         <Route exact path="/othersProfile/:userName" element={<OtherUserProfile/>}/>
         <Route exact path="/allMessage" element ={<AllMessage/>}/>
       </Routes>

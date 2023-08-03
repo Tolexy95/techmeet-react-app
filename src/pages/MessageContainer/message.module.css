@@ -1,0 +1,23 @@
+.mainContainer{
+    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin-top: -5rem; */
+}
+
+
+.recipientPhoto{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: blanchedalmond;
+    position: fixed;
+}
+
+.messageContainer{
+    background-color: white;
+    width: 1000px;
+    padding-left: 30px;
+    
+}

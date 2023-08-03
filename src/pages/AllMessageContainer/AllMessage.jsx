@@ -1,85 +1,80 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserInformationContext } from '../../context/UserTokenProvider';
-import styles from './AllMessage.module.css'; // Import the CSS module
+import { Link } from 'react-router-dom';
+import styles from './AllMessage.module.css';
 
 const AllMessage = () => {
-  const { userData, token, messages, setMessages } = useContext(UserInformationContext); // Get the userData from the context
-  const { userName: currentUserName } = userData || {};
- 
-  const {
-    senderPhotoUrl,
-    senderUsername,
-    recipientPhotoUrl,
-    recipientUsername,
-    content,
-    dateRead,
-    messageSent,
-  } = messages || {};
+  const { token } = useContext(UserInformationContext);
+  const [chattedUsers, setChattedUsers] = useState([]);
 
   useEffect(() => {
-    // Function to fetch all messages from the backend
-    const fetchAllMessages = async () => {
+    const fetchChattedUsers = async () => {
       try {
-        const response = await fetch('https://techmeetappwebapi.onrender.com/api/Message?Container=outbox', {
-          method: 'PUT', // Use the PUT method for fetching all messages
-          headers: {
-            Authorization: `Bearer ${token}`, // Use the token from the context for authorization
-          },
-        });
+        const response = await fetch(
+          'https://techmeetappwebapi.onrender.com/api/Message?Container=outbox',
+          {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setMessages(data);
+        setChattedUsers(data);
       } catch (error) {
-        console.error('Error fetching all messages:', error);
+        console.error('Error fetching chatted users:', error);
       }
     };
 
-    fetchAllMessages(); // Call the fetchAllMessages function
-  }, [token]); // Include the token in the dependencies to re-fetch messages when the token changes
- console.log(currentUserName)
+    fetchChattedUsers();
+  }, [token]);
+
+  // Function to group messages by recipient (recipientUsername)
+  const groupMessagesByRecipient = (messages) => {
+    const groupedMessages = {};
+    messages.forEach((message) => {
+      const recipientUsername = message.recipientUsername.toLowerCase();
+      if (!groupedMessages[recipientUsername]) {
+        groupedMessages[recipientUsername] = [];
+      }
+      groupedMessages[recipientUsername].push(message);
+    });
+    return groupedMessages;
+  };
+
+  // Group messages by recipient
+  const groupedMessages = groupMessagesByRecipient(chattedUsers);
+
+  // Function to get the last message from the conversation
+  const getLastMessage = (messages) => {
+    return messages[messages.length - 1];
+  };
+
   return (
     <div>
-         {/* <h1>chat with {currentUserName}</h1> */}
-      <img src={senderPhotoUrl} alt="" />
-      <p>{senderUsername}</p>
-      <img src={recipientPhotoUrl} alt=""/>
-      <p>{recipientUsername}</p>
-      <p>{content}</p>
-      <p>{dateRead}</p>
-      <p>{messageSent}</p>
+      {/* Display links to chat history with each user */}
+      {Object.entries(groupedMessages).map(([recipientUsername, messages]) => {
+        const lastMessage = getLastMessage(messages);
+        return (
+          <div key={recipientUsername}>
+            <Link to={`/message/${recipientUsername}`} className={styles.chatLink}>
+              <div className={styles.userContainer}>
+                <img
+                  src={lastMessage.recipientPhotoUrl}
+                  alt=""
+                  className={styles.recipientPhoto}
+                />
+                <p>{recipientUsername.toUpperCase()}</p>
+                <p>Last Message: {lastMessage.content}</p>
+              </div>
+            </Link>
+          </div>
+        );
+      })}
     </div>
-//     <aside className="aside">
-//     <div className="col-md-6 col-xl-4 grid-margin stretch-card">
-//       <div className="card">
-//         <div className="card-body">
-//           <div className="d-flex flex-row justify-content-between">
-//             <h4 className="card-title">Messages</h4>
-//             <p className="text-muted mb-1 small">View all</p>
-//           </div>
-//           <div className="preview-list">
-//             {messages.map((message, index) => (
-//               <div key={index} className="preview-item border-bottom">
-//                 <div className="preview-thumbnail">
-//                   <img src={message.imageSrc} alt="image" className="rounded-circle" />
-//                 </div>
-//                 <div className="preview-item-content d-flex flex-grow">
-//                   <div className="flex-grow">
-//                     <div className="d-flex d-md-block d-xl-flex justify-content-between">
-//                       <h6 className="preview-subject">{currentUserName}</h6>
-//                       <p className="text-muted text-small">{message.sentTime}</p>
-//                     </div>
-//                     <p className="text-muted">{message.content}</p>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   </aside>
   );
 };
 
