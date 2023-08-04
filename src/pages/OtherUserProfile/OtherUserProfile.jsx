@@ -5,7 +5,7 @@ import { UserInformationContext } from "../../context/UserTokenProvider";
 import { Link } from "react-router-dom";
 
 const OtherUserProfile = () => {
-  const { userData } = useContext(UserInformationContext); // Get the userData from the context
+  const {userData, messages } = useContext(UserInformationContext); // Get the userData from the context
 
   const {
     userName,
@@ -21,7 +21,8 @@ const OtherUserProfile = () => {
     city,
     country,
   } = userData || {};
-  const{recipientUsername:recipientUsername} =userData || {}
+  const{recipientUsername:recipientUsername} =messages 
+
   // Function to format the date of birth as "YYYY-MM-DD"
   const formatDateOfBirth = (dob) => {
     const dateObj = new Date(dob);

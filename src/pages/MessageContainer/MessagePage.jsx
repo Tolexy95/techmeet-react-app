@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 import style from "./message.module.css";
 
 const MessageContainer = () => {
-  const { token, messages, setMessages } = useContext(UserInformationContext);
+  const { token, messages, setMessages, userName: currentUserUsername} = useContext(UserInformationContext);
   const { recipientUsername } = useParams();
+  
+  // console.log(currentUserUsername)
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -35,39 +37,39 @@ const MessageContainer = () => {
     fetchMessages(); // Call the fetchMessages function
   }, [recipientUsername, token]); // Include the token and userId in the dependencies to re-fetch messages when they change
 
-  // Function to handle sending a new message
-  const handleSendMessage = async () => {
-    if (newMessage.trim() === "") {
-      // Check if the message is empty or contains only whitespace characters
-      console.error("Error sending message: Message cannot be empty");
-      return;
-    }
-    try {
-      const response = await fetch(
-        "https://techmeetappwebapi.onrender.com/api/Message/send",
-        {
-          method: "POST", // Use the POST method for sending messages
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Use the token from the context for authorization
-          },
-          body: JSON.stringify({
-            recipientUsername: recipientUsername.toUpperCase(), // Use userId as the recipientUsername
-            content: newMessage,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+// Function to handle sending a new message
+const handleSendMessage = async () => {
+  if (newMessage.trim() === "") {
+    // Check if the message is empty or contains only whitespace characters
+    console.error("Error sending message: Message cannot be empty");
+    return;
+  }
+  try {
+    const response = await fetch(
+      "https://techmeetappwebapi.onrender.com/api/Message/send",
+      {
+        method: "POST", // Use the POST method for sending messages
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use the token from the context for authorization
+        },
+        body: JSON.stringify({
+          recipientUsername: recipientUsername.toUpperCase(), // Use userId as the recipientUsername
+          content: newMessage,
+        }),
       }
-      const data = await response.json();
-      setMessages([...messages, data]); // Assuming the response data is the newly sent message
-      setNewMessage(""); // Clear the message input after sending
-    } catch (error) {
-      // Handle error if the message couldn't be sent
-      console.error("Error sending message:", error);
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
-  };
+    const data = await response.json();
+    setMessages([...messages, data]); // Assuming the response data is the newly sent message
+    setNewMessage(""); // Clear the message input after sending
+  } catch (error) {
+    // Handle error if the message couldn't be sent
+    console.error("Error sending message:", error);
+  }
+};
 
   // Function to format the time
   const formatTime = (time) => {
@@ -75,8 +77,8 @@ const MessageContainer = () => {
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
-   // Sort messages by messageSent timestamp
-   const sortedMessages = messages.sort((a, b) => {
+  // Sort messages by messageSent timestamp
+  const sortedMessages = messages.sort((a, b) => {
     return new Date(a.messageSent) - new Date(b.messageSent);
   });
 
@@ -93,9 +95,17 @@ const MessageContainer = () => {
       <div className={style.mainContainer}>
         <div>
           {/* Display existing messages */}
-         {sortedMessages.map((message, index) => (
-            <div key={index}>
-              <div className={style.messageContainer}>
+          {sortedMessages.map((message, index) => (
+            <div
+            key={index}
+            className={
+              message.senderUsername === currentUserUsername
+                ? style.sentMessageContainer
+                : style.receivedMessageContainer
+            }
+          >
+
+              <div>
                 <p>{message.content}</p>
                 <p>Sent at: {formatTime(message.messageSent)}</p>
               </div>

@@ -21,3 +21,17 @@
     padding-left: 30px;
     
 }
+
+.responseContainer{
+    background-color: pink;
+    width: 1000px;
+    padding-left: 30px;
+}
+
+.sentMessageContainer{
+    background-color: red;
+}
+
+.receivedMessageContainer{
+    background-color: green;
+}

@@ -70,7 +70,7 @@ const groupMessagesByRecipient = (messages) => {
               to={`/message/${recipientUsername}`}
               className={styles.chatLink}
             >
-              <div className={styles.MainContainer}>
+              <div className={styles.MainContainer}> 
                 <img
                   src={lastMessage.recipientPhotoUrl}
                   alt=""

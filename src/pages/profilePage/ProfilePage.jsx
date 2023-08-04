@@ -3,7 +3,7 @@ import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./profile.module.css";
 import { Link } from "react-router-dom";
 import { UserInformationContext } from "../../context/UserTokenProvider";
-
+import axios from "axios";
 
 const ProfilePage = () => {
   const [profilePicturePreview, setProfilePicturePreview] = useState(AppLogo);
@@ -71,12 +71,35 @@ const ProfilePage = () => {
 
 
 
-  const saveProfile = () => {
-    // Exclude the profilePicture from the saved data in localStorage
-    const { profilePicture, ...profileDataWithoutPicture } = profileData;
-    localStorage.setItem("profile", JSON.stringify(profileDataWithoutPicture));
-    alert("Profile has been successfully updated.");
+  const saveProfile = async () => {
+    try {
+      // Exclude the profilePicture from the saved data in localStorage
+      const { profilePicture, ...profileDataWithoutPicture } = profileData;
+  
+      // Save the profile data (without profilePicture) to localStorage
+      localStorage.setItem("profile", JSON.stringify(profileDataWithoutPicture));
+  
+      // Check if a new profile picture has been selected
+      if (profilePicture && typeof profilePicture !== "string") {
+        // Create a new FormData object to send the picture to the server
+        const formData = new FormData();
+        formData.append("profilePicture", profilePicture);
+  
+        // Make the API request to upload the profile picture
+        await axios.post("https://techmeetappwebapi.onrender.com/api/Users/addphoto", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+  
+      alert("Profile has been successfully updated.");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      // Handle error (e.g., show an error message to the user)
+    }
   };
+  
 
 
   const loadProfile = () => {

@@ -7,18 +7,18 @@ const UserTokenProvider = ({ children }) => {
   const [userName, setUserName] = useState('');
   const [clickedUser, setClickedUser] = useState({});
   const [userData, setUserData] = useState({
-    userName:'',
-    photoUrl :'',
-    dateOfBirth:'',
-    fullName:'',
-    created:'',
-    lastActive:'',
-    gender:'',
-    about:'',
-    lookingFor:'',
-    interests:'',
-    city:'',
-    country:'',
+    // userName:'',
+    // photoUrl :'',
+    // dateOfBirth:'',
+    // fullName:'',
+    // created:'',
+    // lastActive:'',
+    // gender:'',
+    // about:'',
+    // lookingFor:'',
+    // interests:'',
+    // city:'',
+    // country:'',
   });
   const [messages, setMessages] = useState([]);
 
