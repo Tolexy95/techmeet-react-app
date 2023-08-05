@@ -64,7 +64,7 @@ const MainPage = () => {
 
   return (
     <div>
-      <nav className={`${style.sidebar} ${isDarkMode ? style.close : ""}`}>
+    { !isLoading && (<nav className={`${style.sidebar} ${isDarkMode ? style.close : ""}`}>
         <header>
           <div className={style["image-text"]}>
             <i className="bx bx-chevron-right toggle"></i>
@@ -147,18 +147,18 @@ const MainPage = () => {
           </div>
         </div>
       </nav>
-
-      <section className={style.home}>
+       ) } 
+       <section className={style.home}>
         <div className={style.text}>
           <p id="userCredentials">Welcome {userName.toUpperCase()}</p>
         </div>
-        <span className={style.image}>
-          <img src={AppLogo} alt="" className={style.pageLogo} />
-        </span>
+        </section>  
+        
+       <span className={style.image}>
+      <img src={AppLogo} alt="" className={style.pageLogo} />
+    </span>
 
-        {isLoading && <p className={style.successMessage}>Fetching...</p>}
-       
-      </section>
+    {isLoading && <p className={style.successMessage}>Fetching...</p>}
     </div>
   );
 };

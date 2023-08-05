@@ -319,6 +319,7 @@ body.dark .home .text {
   left: 50%;
   transform: translate(-50%, -50%) rotate(-30deg);
   z-index: 1;
+  width: 500px;
 }
 
 .pageLogo::after {
