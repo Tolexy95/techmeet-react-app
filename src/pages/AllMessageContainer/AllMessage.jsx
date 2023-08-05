@@ -33,7 +33,7 @@ const AllMessage = () => {
   }, [token]);
 
   // Function to group messages by recipient (recipientUsername)
-const groupMessagesByRecipient = (messages) => {
+  const groupMessagesByRecipient = (messages) => {
     const groupedMessages = {};
     messages.forEach((message) => {
       const recipientUsername = message.recipientUsername.toLowerCase();
@@ -42,14 +42,14 @@ const groupMessagesByRecipient = (messages) => {
       }
       groupedMessages[recipientUsername].push(message);
     });
-    // Sort messages for each recipient by messageSent timestamp in descending order
-  Object.values(groupedMessages).forEach((messages) => {
-    messages.sort((a, b) => new Date(b.messageSent) - new Date(a.messageSent));
-  });
 
-  return groupedMessages;
-};
-  
+    // Sort messages for each recipient by messageSent timestamp in ascending order
+    Object.values(groupedMessages).forEach((messages) => {
+      messages.sort((a, b) => new Date(a.messageSent) - new Date(b.messageSent));
+    });
+
+    return groupedMessages;
+  };
 
   // Group messages by recipient
   const groupedMessages = groupMessagesByRecipient(chattedUsers);
@@ -70,7 +70,7 @@ const groupMessagesByRecipient = (messages) => {
               to={`/message/${recipientUsername}`}
               className={styles.chatLink}
             >
-              <div className={styles.MainContainer}> 
+              <div className={styles.MainContainer}>
                 <img
                   src={lastMessage.recipientPhotoUrl}
                   alt=""
@@ -81,14 +81,17 @@ const groupMessagesByRecipient = (messages) => {
                   <p>Last Message: {lastMessage.content}</p>
                   <p>
                     Date & Time:{" "}
-                    {new Date(lastMessage.messageSent).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
+                    {new Date(lastMessage.messageSent).toLocaleString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      }
+                    )}
                   </p>
                 </div>
               </div>
@@ -101,47 +104,3 @@ const groupMessagesByRecipient = (messages) => {
 };
 
 export default AllMessage;
-
-
-
-
-// return (
-//   <div>
-//     {/* Display links to chat history with each user */}
-//     {Object.entries(groupedMessages).map(([senderUsername, messages]) => {
-//       const lastMessage = getLastMessage(messages);
-//       return (
-//         <div key={senderUsername}>
-//           <Link
-//             to={`/message}`}
-//             className={styles.chatLink}
-//           >
-//             <div className={styles.MainContainer}> 
-//               <img
-//                 src={lastMessage.senderPhotoUrl}
-//                 alt=""
-//                 className={styles.recipientPhoto}
-//               />
-//               <div className={styles.messageContainer}>
-//                 <p>{senderUsername.toUpperCase()}</p>
-//                 <p>Last Message: {lastMessage.content}</p>
-//                 <p>
-//                   Date & Time:{" "}
-//                   {new Date(lastMessage.messageSent).toLocaleString("en-US", {
-//                     year: "numeric",
-//                     month: "2-digit",
-//                     day: "2-digit",
-//                     hour: "numeric",
-//                     minute: "numeric",
-//                     hour12: true,
-//                   })}
-//                 </p>
-//               </div>
-//             </div>
-//           </Link>
-//         </div>
-//       );
-//     })}
-//   </div>
-// );
-// };
