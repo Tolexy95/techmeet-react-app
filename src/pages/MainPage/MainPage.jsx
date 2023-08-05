@@ -112,6 +112,14 @@ const MainPage = () => {
                   Messages
                 </Link>
               </li>
+
+              <li className={style["nav-link"]}>
+                <i className="bx bx-wallet icon"></i>
+                <Link to="/inboxMessage" className={`text ${style["nav-text"]}`}>
+                 Inbox Messages
+                </Link>
+              </li>
+
             </ul>
           </div>
 

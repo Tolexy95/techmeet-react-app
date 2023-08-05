@@ -101,3 +101,27 @@ const groupMessagesByRecipient = (messages) => {
 };
 
 export default AllMessage;
+
+
+// return (
+//     <div>
+//       <h2>Inbox Messages</h2>
+//       <div className={style.mainContainer}>
+//         {Object.keys(groupedMessages).map((sender, index) => (
+//           <div key={index}>
+//             <h3>Conversation with {sender}</h3>
+//             {/* Display messages for the conversation */}
+//             {groupedMessages[sender].map((message, messageIndex) => (
+//               <div key={messageIndex}>
+//                 <div className={style.messageContainerReceived}>
+//                   <p>{message.content}</p>
+//                   <p>Sent at: {formatTime(message.messageSent)}</p>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };

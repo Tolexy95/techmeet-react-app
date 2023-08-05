@@ -1,4 +1,4 @@
-.recipientPhoto{
+.senderPhoto{
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -13,4 +13,3 @@
     margin-left: 2rem;
     margin-top: 1rem;  
 }
-

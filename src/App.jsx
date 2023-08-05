@@ -13,7 +13,7 @@ import UserPage from "./pages/AllUsersPage/UserPage";
 import Home from "./pages/Home";
 import MessageContainer from "./pages/MessageContainer/MessagePage";
 import AllMessage from "./pages/AllMessageContainer/AllMessage";
-
+import InboxMessages from "./pages/InboxMessages/InboxMessages";
 
 function App() {
   return (
@@ -28,7 +28,9 @@ function App() {
         <Route exact path="/message/:recipientUsername" element={<MessageContainer/>}/>
         <Route exact path="/othersProfile/:Username" element={<OtherUserProfile/>}/>
         <Route exact path="/allMessage" element ={<AllMessage/>}/>
+        <Route exact path="/inboxMessage" element={<InboxMessages/>}/>
       </Routes>
+      
         </>
   );
 }
