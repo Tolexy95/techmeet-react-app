@@ -103,25 +103,45 @@ const groupMessagesByRecipient = (messages) => {
 export default AllMessage;
 
 
+
+
 // return (
-//     <div>
-//       <h2>Inbox Messages</h2>
-//       <div className={style.mainContainer}>
-//         {Object.keys(groupedMessages).map((sender, index) => (
-//           <div key={index}>
-//             <h3>Conversation with {sender}</h3>
-//             {/* Display messages for the conversation */}
-//             {groupedMessages[sender].map((message, messageIndex) => (
-//               <div key={messageIndex}>
-//                 <div className={style.messageContainerReceived}>
-//                   <p>{message.content}</p>
-//                   <p>Sent at: {formatTime(message.messageSent)}</p>
-//                 </div>
+//   <div>
+//     {/* Display links to chat history with each user */}
+//     {Object.entries(groupedMessages).map(([senderUsername, messages]) => {
+//       const lastMessage = getLastMessage(messages);
+//       return (
+//         <div key={senderUsername}>
+//           <Link
+//             to={`/message}`}
+//             className={styles.chatLink}
+//           >
+//             <div className={styles.MainContainer}> 
+//               <img
+//                 src={lastMessage.senderPhotoUrl}
+//                 alt=""
+//                 className={styles.recipientPhoto}
+//               />
+//               <div className={styles.messageContainer}>
+//                 <p>{senderUsername.toUpperCase()}</p>
+//                 <p>Last Message: {lastMessage.content}</p>
+//                 <p>
+//                   Date & Time:{" "}
+//                   {new Date(lastMessage.messageSent).toLocaleString("en-US", {
+//                     year: "numeric",
+//                     month: "2-digit",
+//                     day: "2-digit",
+//                     hour: "numeric",
+//                     minute: "numeric",
+//                     hour12: true,
+//                   })}
+//                 </p>
 //               </div>
-//             ))}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
+//             </div>
+//           </Link>
+//         </div>
+//       );
+//     })}
+//   </div>
+// );
 // };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserInformationContext } from '../../context/UserTokenProvider';
-import styles from "./inboxmessage.module.css"
+import style from "./inboxmessage.module.css"
 import { Link } from 'react-router-dom';
 
 
@@ -58,54 +58,51 @@ Object.values(groupedMessages).forEach((messages) => {
 // Group messages by sender
   const groupedMessages = groupMessagesBySender(inboxMessages);
 
-  // Function to get the last message from the conversation
-  const getLastMessage = (messages) => {
-    return messages[messages.length - 1];
+//   // Function to get the last message from the conversation
+//   const getLastMessage = (messages) => {
+//     return messages[messages.length - 1];
+//   };
+
+const formatTime = (time) => {
+    const date = new Date(time);
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const day = days[date.getDay()];
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const dayOfMonth = date.getDate().toString().padStart(2, "0");
+    const year = date.getFullYear().toString().substr(-2);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amOrPm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    return `${day}, ${month}/${dayOfMonth}/${year}, ${formattedHours}:${formattedMinutes} ${amOrPm}`;
   };
 
 
-
-  return (
+return (
     <div>
-      {/* Display links to chat history with each user */}
-      {Object.entries(groupedMessages).map(([senderUsername, messages]) => {
-        const lastMessage = getLastMessage(messages);
-        return (
-          <div key={senderUsername}>
-            <Link
-              to={`/message}`}
-              className={styles.chatLink}
-            >
-              <div className={styles.MainContainer}> 
-                <img
-                  src={lastMessage.senderPhotoUrl}
-                  alt=""
-                  className={styles.recipientPhoto}
-                />
-                <div className={styles.messageContainer}>
-                  <p>{senderUsername.toUpperCase()}</p>
-                  <p>Last Message: {lastMessage.content}</p>
-                  <p>
-                    Date & Time:{" "}
-                    {new Date(lastMessage.messageSent).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
-                  </p>
+      <h2>Inbox Messages</h2>
+      <div className={style.mainContainer}>
+        {Object.keys(groupedMessages).map((sender, index) => (
+          <div key={index}>
+            <h3>Conversation with {sender}</h3>
+            {/* Display messages for the conversation */}
+            {groupedMessages[sender].map((message, messageIndex) => (
+              <div key={messageIndex}>
+                <div className={style.messageContainerReceived}>
+                  <p>{message.content}</p>
+                  <p>Sent at: {formatTime(message.messageSent)}</p>
                 </div>
               </div>
-            </Link>
+            ))}
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 };
 
+  
 export default InboxMessages;
 
 
