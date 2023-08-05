@@ -3,12 +3,11 @@ import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./otherUser.module.css";
 import { UserInformationContext } from "../../context/UserTokenProvider";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
-const OtherUserProfile = (match) => {
+
+const OtherUserProfile = () => {
   const {userData, messages } = useContext(UserInformationContext); // Get the userData from the context
-  const {Username} = useParams();
-
+  
 
   const {
     userName,
@@ -24,7 +23,7 @@ const OtherUserProfile = (match) => {
     city,
     country,
   } = userData || {};
-  const{recipientUsername:recipientUsername} =messages 
+  
 
   // Function to format the date of birth as "YYYY-MM-DD"
   const formatDateOfBirth = (dob) => {
@@ -77,7 +76,7 @@ const OtherUserProfile = (match) => {
         </p> */}
       </div>
       <div className={styles.message}>
-      <Link to={`/message/${recipientUsername}`}> chat with user</Link>
+      <Link to={`/message/${userName}`}> chat with user</Link>
       </div>
     </div>
   );

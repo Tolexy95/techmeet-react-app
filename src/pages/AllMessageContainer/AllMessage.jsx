@@ -11,7 +11,7 @@ const AllMessage = () => {
     const fetchChattedUsers = async () => {
       try {
         const response = await fetch(
-          "https://techmeetappwebapi.onrender.com/api/Message?Container=outbox",
+          "https://techmeetappwebapi.onrender.com/api/Message?Container=allMessages",
           {
             method: "PUT",
             headers: {

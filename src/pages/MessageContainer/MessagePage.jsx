@@ -29,9 +29,9 @@ const MessageContainer = () => {
             },
           }
         );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
         const data = await response.json();
         setMessages(data);
       } catch (error) {
@@ -64,9 +64,7 @@ const MessageContainer = () => {
           }),
         }
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      
       const data = await response.json();
       setMessages([...messages, data]); // Assuming the response data is the newly sent message
       setNewMessage(""); // Clear the message input after sending

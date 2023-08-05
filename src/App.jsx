@@ -30,7 +30,7 @@ function App() {
         <Route exact path="/othersProfile/:Username" element={<OtherUserProfile/>}/>
         <Route exact path="/allMessage" element ={<AllMessage/>}/>
         <Route exact path="/inboxMessage" element={<InboxMessages/>}/>
-        <Route element={<NotFoundPage/>}/>
+        <Route  path= "*" element={<NotFoundPage/>}/>
       </Routes>
       
         </>

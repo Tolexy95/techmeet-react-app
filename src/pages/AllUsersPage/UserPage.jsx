@@ -1,15 +1,43 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./userpage.module.css";
 import { UserInformationContext } from "../../context/UserTokenProvider";
 
 
-
 const UserPage = () => {
   const [users, setUsers] = useState([]);
-  const { token, userData, messages, setMessages } = useContext(UserInformationContext);
-  // const { recipientUsername } = messages;
- 
+  const { token, userData, messages, setMessages, setUserData } = useContext(
+    UserInformationContext
+  );
+
+  const navigate = useNavigate();
+
+  const goToUserProfile = async (userId) => {
+    try {
+      // setIsLoading(true);
+      const response = await fetch(
+        `https://techmeetappwebapi.onrender.com/api/Users/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token as an authentication header
+          },
+        }
+      );
+
+      const userData = await response.json();
+
+      setUserData(userData); // Save the fetched user data in the state
+      // Use the navigate function to navigate to the user profile page
+
+      navigate(`/othersProfile/${userId}`);
+    } catch (error) {
+      console.error("Error:", error.message);
+      // setIsLoading(false);
+      // Handle the error here, e.g., show an error message to the user
+    }
+  };
 
   useEffect(() => {
     const getUsers = async () => {
@@ -29,13 +57,12 @@ const UserPage = () => {
 
         const data = await response.json();
         setUsers(data);
-        } catch (error) {
+      } catch (error) {
         console.error("Error:", error);
       }
     };
     getUsers();
   }, [token]);
-  
 
   return (
     <div>
@@ -61,14 +88,17 @@ const UserPage = () => {
                   hour12: true,
                 })}
               </p>
-              <Link
-                to={"/othersProfile/:UserId"}
+
+              <button
+                // to={`/othersProfile/${user.userName}`}
                 className={styles.otherUserProfile}
+                onClick={() => goToUserProfile(user.userName)}
               >
                 Go to user profile
-              </Link>
+              </button>
+
               <Link
-                to={`/message/${messages.recipientUsername}`}
+                to={`/message/${user.userName}`}
                 className={styles.chatWithUser}
               >
                 Chat with user
@@ -82,5 +112,3 @@ const UserPage = () => {
 };
 
 export default UserPage;
-
-
