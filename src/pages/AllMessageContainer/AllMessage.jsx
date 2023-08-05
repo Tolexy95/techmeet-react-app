@@ -89,7 +89,7 @@ const AllMessage = () => {
                         day: "2-digit",
                         hour: "numeric",
                         minute: "numeric",
-                        hour12: true,
+                        // hour24: true,
                       }
                     )}
                   </p>
