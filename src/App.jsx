@@ -14,6 +14,7 @@ import Home from "./pages/Home";
 import MessageContainer from "./pages/MessageContainer/MessagePage";
 import AllMessage from "./pages/AllMessageContainer/AllMessage";
 import InboxMessages from "./pages/InboxMessages/InboxMessages";
+import NotFoundPage from "./pages/NOTFOUND/NotFoundPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route exact path="/othersProfile/:Username" element={<OtherUserProfile/>}/>
         <Route exact path="/allMessage" element ={<AllMessage/>}/>
         <Route exact path="/inboxMessage" element={<InboxMessages/>}/>
+        <Route element={<NotFoundPage/>}/>
       </Routes>
       
         </>
