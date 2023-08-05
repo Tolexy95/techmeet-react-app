@@ -2,15 +2,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "./userpage.module.css";
 import { UserInformationContext } from "../../context/UserTokenProvider";
-import { useParams } from "react-router-dom";
+
 
 
 const UserPage = () => {
   const [users, setUsers] = useState([]);
   const { token, userData, messages, setMessages } = useContext(UserInformationContext);
   // const { recipientUsername } = messages;
-  const { recipientUsername } = useParams();
  
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -29,39 +29,13 @@ const UserPage = () => {
 
         const data = await response.json();
         setUsers(data);
-      } catch (error) {
+        } catch (error) {
         console.error("Error:", error);
       }
     };
     getUsers();
   }, [token]);
   
-  useEffect(() => {
-    // Function to fetch messages from the backend
-    const fetchMessages = async () => {
-      try {
-        const response = await fetch(
-          `https://techmeetappwebapi.onrender.com/api/Message/thread/${recipientUsername}`,
-          {
-            method: "PUT", // Use the PUT method for fetching messages
-            headers: {
-              Authorization: `Bearer ${token}`, // Use the token from the context for authorization
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setMessages(data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-
-    fetchMessages(); // Call the fetchMessages function
-  }, [recipientUsername, token]); // Include the token and userId in the dependencies to re-fetch messages when they change
-
 
   return (
     <div>
@@ -88,7 +62,7 @@ const UserPage = () => {
                 })}
               </p>
               <Link
-                to={`/othersProfile/${userData.userName}`}
+                to={"/othersProfile/:UserId"}
                 className={styles.otherUserProfile}
               >
                 Go to user profile

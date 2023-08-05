@@ -32,9 +32,11 @@ const MainPage = () => {
       }
 
       const userData = await response.json();
+      
       setUserData(userData); // Save the fetched user data in the state
        // Use the navigate function to navigate to the user profile page
-       navigate(`/othersProfile/${userData.userName}`);
+      
+       navigate("/othersProfile/:Username");
       } catch (error) {
         console.error("Error:", error.message);
         setIsLoading(false);
@@ -42,7 +44,7 @@ const MainPage = () => {
         // Handle the error here, e.g., show an error message to the user
       }
     };
-  
+
     const handleKeyPress = (e) => {
       if (e.key === "Enter") {
         findUsers();

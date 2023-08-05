@@ -3,9 +3,12 @@ import AppLogo from "../../assets/img/AppLogo-removebg-preview.png";
 import styles from "./otherUser.module.css";
 import { UserInformationContext } from "../../context/UserTokenProvider";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const OtherUserProfile = () => {
+const OtherUserProfile = (match) => {
   const {userData, messages } = useContext(UserInformationContext); // Get the userData from the context
+  const {Username} = useParams();
+
 
   const {
     userName,
